@@ -1,0 +1,140 @@
+.container {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.header {
+  margin-bottom: 16px;
+}
+
+.heading {
+  font-size: 1.4rem;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.writeBtn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  padding: 12px 24px;
+  background: #e94560;
+  color: #fff;
+  border: none;
+  border-radius: 28px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(233, 69, 96, 0.4);
+  z-index: 50;
+}
+
+.writeBtn:hover {
+  background: #c73652;
+  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sortBtns {
+  display: flex;
+  gap: 8px;
+}
+
+.sortBtns button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.sortBtns button.active {
+  background: #1a1a2e;
+  color: #fff;
+  border-color: #1a1a2e;
+}
+
+.searchForm {
+  display: flex;
+  gap: 8px;
+}
+
+.searchForm input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  width: 200px;
+  outline: none;
+}
+
+.searchForm input:focus {
+  border-color: #e94560;
+}
+
+.searchForm button {
+  padding: 8px 16px;
+  background: #e94560;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.table th {
+  background: #1a1a2e;
+  color: #fff;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.row {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.row:hover {
+  background: #fef2f4;
+}
+
+.title {
+  font-weight: 500;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty {
+  text-align: center;
+  color: #999;
+  padding: 60px 0;
+}

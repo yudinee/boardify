@@ -1,0 +1,93 @@
+.container {
+  max-width: 800px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.form {
+  background: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form h2 {
+  font-size: 1.4rem;
+  color: #1a1a2e;
+  margin: 0 0 8px;
+}
+
+.form input {
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.form input:focus {
+  border-color: #e94560;
+}
+
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+  line-height: 1.65;
+}
+
+.form textarea:focus {
+  border-color: #e94560;
+}
+
+.editorWrap {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.editorWrap:focus-within {
+  border-color: #e94560;
+}
+
+.error {
+  color: #e94560;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.buttons button {
+  padding: 10px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.buttons button[type='button'] {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #666;
+}
+
+.buttons button[type='submit'] {
+  border: none;
+  background: #e94560;
+  color: #fff;
+}
+
+.buttons button:hover {
+  opacity: 0.88;
+}

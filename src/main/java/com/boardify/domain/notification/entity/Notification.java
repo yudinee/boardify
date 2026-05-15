@@ -51,6 +51,7 @@ public class Notification {
   public Notification(Board board, Member member, NotificationType type){
     this.board = board;
     this.member = member;
+    this.type = type;
     this.isRead = false;
     this.createdAt = LocalDateTime.now();
   }

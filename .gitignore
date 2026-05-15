@@ -35,6 +35,9 @@ build/
 application-local.properties
 application-prod.properties
 
+#frontend
+frontend/node_modules/
+
 # OS
 .DS_Store
 Thumbs.db

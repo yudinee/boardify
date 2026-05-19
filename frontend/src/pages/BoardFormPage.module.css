@@ -50,12 +50,12 @@
 .editorWrap {
   border: 1px solid #ddd;
   border-radius: 4px;
-  overflow: hidden;
 }
 
 .editorWrap:focus-within {
   border-color: #e94560;
 }
+
 
 .error {
   color: #e94560;

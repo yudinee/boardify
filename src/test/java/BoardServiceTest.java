@@ -11,6 +11,9 @@ import com.boardify.domain.board.service.BoardService;
 import com.boardify.domain.member.entity.Member;
 import com.boardify.domain.member.repository.MemberRepository;
 import com.boardify.exception.MemberException;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
 public class BoardServiceTest {
@@ -74,6 +80,38 @@ public class BoardServiceTest {
         .isInstanceOf(MemberException.class)
         .hasMessage("Member not found");
   }
+
+  @Test
+  @DisplayName("글 목록 불러오기 성공")
+  void findAll_success() {
+
+    //given
+    Member member = Member.builder()
+        .nickname("유진")
+        .build();
+
+    Board board = Board.builder()
+        .member(member)
+        .title("제목")
+        .content("내용")
+        .build();
+
+    Pageable pageable = (Pageable) PageRequest.of(0, 10);
+    Page<Board> boardPage = new PageImpl<>(List.of(board));
+
+    given(boardRepository.findAll(pageable)).willReturn(boardPage);
+
+    //when
+    Page<BoardResponse> result = boardService.findAll(pageable);
+
+    //then
+    assertThat(result.getContent()).hasSize(1);
+    assertThat(result.getContent().get(0).getTitle()).isEqualTo("제목");
+
+
+  }
+
+
 
 
 }

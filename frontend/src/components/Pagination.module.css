@@ -13,6 +13,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.875rem;
+  color: black;  /* ← 여기 추가 */
 }
 
 .pagination button:disabled {
@@ -25,8 +26,9 @@
   color: #e94560;
 }
 
+
 .active {
-  background: #e94560;
-  color: #fff;
-  border-color: #e94560;
+  background: #e94560 !important;
+  color: #fff !important;
+  border-color: #e94560 !important;
 }

@@ -58,7 +58,7 @@ export default function BoardListPage() {
                 <td>{board.id}</td>
                 <td className={styles.title}>{board.title}</td>
                 <td>{board.author}</td>
-                <td>{new Date(board.createdAt).toLocaleDateString('ko-KR')}</td>
+                <td>{board.createdAt.replace('T', ' ').slice(0, 10)}</td>
               </tr>
             ))}
           </tbody>

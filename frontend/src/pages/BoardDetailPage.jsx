@@ -4,6 +4,8 @@ import { Viewer } from '@toast-ui/react-editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import api from '../api/axiosInstance'
 import styles from './BoardDetailPage.module.css'
+import { getOne, deleteBoard } from '../api/boardapi'
+
 
 export default function BoardDetailPage() {
   const { id } = useParams()
@@ -24,7 +26,7 @@ export default function BoardDetailPage() {
 
   async function fetchBoard() {
     try {
-      const { data } = await api.get(`/boards/${id}`)
+      const { data } = await getOne(id)
       setBoard(data)
       setLiked(data.likedByCurrentUser ?? false)
     } catch {
@@ -53,8 +55,8 @@ export default function BoardDetailPage() {
   async function handleDelete() {
     if (!confirm('정말 삭제하시겠습니까?')) return
     try {
-      await api.delete(`/boards/${id}`)
-      navigate('/')
+      await deleteBoard(id)
+      navigate('/boards')
     } catch {
       alert('삭제에 실패했습니다.')
     }
@@ -95,7 +97,7 @@ export default function BoardDetailPage() {
       <div className={styles.card}>
         <h1 className={styles.title}>{board.title}</h1>
         <div className={styles.meta}>
-          <span>{board.authorNickname}</span>
+          <span>{board.author}</span>
           <span>{new Date(board.createdAt).toLocaleString('ko-KR')}</span>
           <button className={liked ? styles.likedBtn : styles.likeBtn} onClick={handleLike}>
             ♥ {board.likeCount}
@@ -104,12 +106,12 @@ export default function BoardDetailPage() {
         <div className={styles.content}>
           <Viewer initialValue={board.content} />
         </div>
-        {token && (
+        
           <div className={styles.actions}>
             <button onClick={() => navigate(`/boards/${id}/edit`)}>수정</button>
             <button className={styles.deleteBtn} onClick={handleDelete}>삭제</button>
           </div>
-        )}
+        
       </div>
 
       <div className={styles.commentSection}>

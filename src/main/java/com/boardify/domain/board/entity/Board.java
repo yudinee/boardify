@@ -45,6 +45,9 @@ public class Board {
   @Column(nullable = false)
   private LocalDateTime updatedAt;
 
+  @Column(nullable = false)
+  private boolean deleted = false;
+
   @Builder
   public Board(Member member, String title, String content){
     this.member = member;
@@ -59,6 +62,10 @@ public class Board {
     this.title = title;
     this.content = content;
     this.updatedAt = LocalDateTime.now();
+  }
+
+  public void delete(){
+    deleted = true;
   }
 
   public void increaseViewCount(){

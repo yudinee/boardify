@@ -4,7 +4,8 @@ import { Editor } from '@toast-ui/react-editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import api from '../api/axiosInstance'
 import styles from './BoardFormPage.module.css'
-import { createBoard } from '../api/boardapi'
+import { createBoard,updateBoard, getOne} from '../api/boardapi'
+
 
 export default function BoardFormPage() {
   const { id } = useParams()
@@ -16,12 +17,12 @@ export default function BoardFormPage() {
 
   useEffect(() => {
     if (isEdit) {
-      api.get(`/boards/${id}`)
+      getOne(id)
         .then(({ data }) => {
           setTitle(data.title)
           editorRef.current?.getInstance().setHTML(data.content)
         })
-        .catch(() => navigate('/'))
+        .catch(() => navigate('/boards'))
     }
   }, [id])
 
@@ -48,7 +49,7 @@ export default function BoardFormPage() {
     }
     try {
       if (isEdit) {
-        await api.put(`/boards/${id}`, { title, content })
+        await updateBoard(id, { title, content })
         navigate(`/boards/${id}`)
       } else {
         const { data } = await createBoard({title, content})

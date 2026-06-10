@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,7 @@ public class BoardService {
   */
   @Transactional
   public BoardResponse create(BoardRequest request){
-    Member member = memberRepository.findById(1L).orElseThrow(()-> new MemberException("Member not found"));
+    Member member = memberRepository.findById(1L).orElseThrow(()-> new MemberException("Member not found", HttpStatus.NOT_FOUND));
 
       // Board.builder() → DB에 저장할 Board 객체 만드는 것
       Board board = Board.builder()

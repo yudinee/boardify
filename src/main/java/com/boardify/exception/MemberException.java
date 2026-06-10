@@ -1,16 +1,15 @@
 package com.boardify.exception;
 
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@Getter
 public class MemberException extends RuntimeException {
 
-  public MemberException(String message) {
+  private final HttpStatus status;
+
+  public MemberException(String message, HttpStatus status) {
     super(message);
-  }
-
-  public MemberException(Throwable cause) {
-    super(cause);
-  }
-
-  public MemberException(String message, Throwable cause) {
-    super(message, cause);
+    this.status = status;
   }
 }

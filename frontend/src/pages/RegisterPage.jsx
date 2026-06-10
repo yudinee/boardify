@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import api from '../api/axiosInstance'
 import styles from './AuthPage.module.css'
+import { signup } from '../api/memberApi'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
-  const [form, setForm] = useState({ username: '', password: '', nickname: '' })
+  const [form, setForm] = useState({ email: '', password: '', nickname: '' })
   const [error, setError] = useState('')
 
   function handleChange(e) {
@@ -16,10 +16,10 @@ export default function RegisterPage() {
     e.preventDefault()
     setError('')
     try {
-      await api.post('/auth/signup', form)
+      await signup(form)
       navigate('/login')
     } catch (err) {
-      setError(err.response?.data?.message || '회원가입에 실패했습니다.')
+      setError(err.response?.data || '회원가입에 실패했습니다.')
     }
   }
 
@@ -29,9 +29,9 @@ export default function RegisterPage() {
         <h2>회원가입</h2>
         {error && <p className={styles.error}>{error}</p>}
         <input
-          name="username"
-          placeholder="아이디"
-          value={form.username}
+          name="email"
+          placeholder="이메일"
+          value={form.email}
           onChange={handleChange}
           required
         />

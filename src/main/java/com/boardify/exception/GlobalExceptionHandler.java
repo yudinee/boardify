@@ -23,6 +23,6 @@ public class GlobalExceptionHandler {
   //회원 관련 예외 처리
   @ExceptionHandler(MemberException.class)
   public ResponseEntity<String> handleMemberException(MemberException e) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    return ResponseEntity.status(e.getStatus()).body(e.getMessage());
   }
 }

@@ -31,8 +31,8 @@ public class BoardService {
   * 글쓰기
   */
   @Transactional
-  public BoardResponse create(BoardRequest request){
-    Member member = memberRepository.findById(1L).orElseThrow(()-> new MemberException("Member not found", HttpStatus.NOT_FOUND));
+  public BoardResponse create(BoardRequest request, String email){
+    Member member = memberRepository.findByEmail(email).orElseThrow(()-> new MemberException("Member not found", HttpStatus.NOT_FOUND));
 
       // Board.builder() → DB에 저장할 Board 객체 만드는 것
       Board board = Board.builder()
@@ -61,7 +61,7 @@ public class BoardService {
   */
   public BoardResponse findOne(Long id){
 
-    Board board = boardRepository.findByIdAndDeletedFalse(id).orElseThrow(()-> new BoardException("Board not found."));
+    Board board = boardRepository.findByIdAndDeletedFalse(id).orElseThrow(()-> new BoardException("Board not found.", HttpStatus.NOT_FOUND));
     return BoardResponse.from(board); //하나씩 변환할 때 .form
 
   }
@@ -71,8 +71,14 @@ public class BoardService {
   * 글 수정
   * */
   @Transactional
-  public BoardResponse update(Long id, BoardRequest request){
-    Board board = boardRepository.findByIdAndDeletedFalse(id).orElseThrow(()-> new BoardException("Board not found."));
+  public BoardResponse update(Long id, BoardRequest request, String email){
+    Board board = boardRepository.findByIdAndDeletedFalse(id).orElseThrow(()-> new BoardException("Board not found.", HttpStatus.NOT_FOUND));
+
+    //본인 글인지 확인
+    if(!board.getMember().getEmail().equals(email)){
+      throw new BoardException("Email or password incorrect", HttpStatus.FORBIDDEN);
+    }
+
     board.update(request.getTitle(), request.getContent());
     return BoardResponse.from(board);
   }
@@ -81,8 +87,13 @@ public class BoardService {
    *글 삭제
    */
   @Transactional
-  public void delete(Long id){
-    Board board = boardRepository.findByIdAndDeletedFalse(id).orElseThrow(()-> new BoardException("Board not found."));
+  public void delete(Long id, String email){
+    Board board = boardRepository.findByIdAndDeletedFalse(id).orElseThrow(()-> new BoardException("Board not found.", HttpStatus.NOT_FOUND));
+
+    // 본인 글인지 확인
+    if (!board.getMember().getEmail().equals(email)) {
+      throw new BoardException("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
+    }
     board.delete();
   }
 }

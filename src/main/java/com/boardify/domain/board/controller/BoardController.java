@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,9 +30,10 @@ public class BoardController {
   * 글쓰기
   */
   @PostMapping
-  public ResponseEntity<BoardResponse>create(@RequestBody BoardRequest request){
+  public ResponseEntity<BoardResponse>create(@RequestBody BoardRequest request,
+      @AuthenticationPrincipal UserDetails userDetails){
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(boardService.create(request));
+        .body(boardService.create(request, userDetails.getUsername()));
   }
 
   /*
@@ -53,16 +56,17 @@ public class BoardController {
   * 글 수정
   * */
   @PutMapping("/{id}")
-  public ResponseEntity<BoardResponse> update(@PathVariable Long id, @RequestBody BoardRequest request){
-    return ResponseEntity.ok(boardService.update(id, request));
+  public ResponseEntity<BoardResponse> update(@PathVariable Long id, @RequestBody BoardRequest request,
+      @AuthenticationPrincipal UserDetails userDetails){
+    return ResponseEntity.ok(boardService.update(id, request, userDetails.getUsername()));
   }
 
   /*
   * 글 삭재
   * */
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable Long id){
-    boardService.delete(id);
+  public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails){
+    boardService.delete(id, userDetails.getUsername());
     return ResponseEntity.noContent().build();
   }
 

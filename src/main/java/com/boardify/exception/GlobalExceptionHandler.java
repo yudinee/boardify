@@ -14,10 +14,10 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
   }
 
-  // 게시글 관련 예외 처리
+  //게시글 관련 예외 처리
   @ExceptionHandler(BoardException.class)
   public ResponseEntity<String> handleBoardException(BoardException e) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    return ResponseEntity.status(e.getStatus()).body(e.getMessage());
   }
 
   //회원 관련 예외 처리

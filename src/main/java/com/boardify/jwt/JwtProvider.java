@@ -23,17 +23,29 @@ public class JwtProvider {
   @Value("${jwt.expiration}")
   private long expiration;
 
+  @Value("${jwt.refresh-expiration}")
+  private long refreshExpiration;
+
   /*
   * 토큰 생성
   * 로그인 성공 시 email을 담아서 토큰을 만들어 반환
   * email = 실제 로그인 한 사용자의 이메일
   * 나중에 요청이 들어오면 토큰에서 email을 꺼내서 누가 요청했는지 알 수 있음
   * */
-  public String generateToken(String email){
+  public String generateAccessToken(String email) {
     return Jwts.builder()
         .setSubject(email)
         .setIssuedAt(new Date())
         .setExpiration(new Date(System.currentTimeMillis() + expiration))
+        .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+        .compact();
+  }
+
+  public String generateRefreshToken(String email) {
+    return Jwts.builder()
+        .setSubject(email)
+        .setIssuedAt(new Date())
+        .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
         .signWith(getSigningKey(), SignatureAlgorithm.HS256)
         .compact();
   }

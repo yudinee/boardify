@@ -60,18 +60,18 @@ public class BoardServiceTest {
         .content(request.getContent())
         .build();
 
-    given(memberRepository.findById(1L)).willReturn(Optional.of(member));
+    given(memberRepository.findByEmail("test@test.com")).willReturn(Optional.of(member));
     given(boardRepository.save(any(Board.class))).willReturn(board);
 
     //when(실행)
-    BoardResponse response = boardService.create(request);
+    BoardResponse response = boardService.create(request, "test@test.com");
 
     //then(검증)
     assertThat(response.getTitle()).isEqualTo("제목");
     assertThat(response.getContent()).isEqualTo("내용");
     assertThat(response.getAuthor()).isEqualTo("유진");
 
-    then(memberRepository).should().findById(1L);
+    then(memberRepository).should().findByEmail("test@test.com");
     then(boardRepository).should().save(any(Board.class));
   }
 
@@ -81,10 +81,11 @@ public class BoardServiceTest {
 
     //given
     BoardRequest request = new BoardRequest("제목", "내용");
-    given(memberRepository.findById(1L)).willReturn(Optional.empty());
+    given(memberRepository.findByEmail("test@test.com")).willReturn(Optional.empty());
+
 
     //when & then
-    assertThatThrownBy(() -> boardService.create(request))
+    assertThatThrownBy(() -> boardService.create(request, "test@test.com"))
         .isInstanceOf(MemberException.class)
         .hasMessage("Member not found");
   }
@@ -195,6 +196,7 @@ public class BoardServiceTest {
 
     //given
     Member member = Member.builder()
+        .email("test@test.com")  // email 추가
         .nickname("유진")
         .build();
 
@@ -210,7 +212,7 @@ public class BoardServiceTest {
     given(boardRepository.findByIdAndDeletedFalse(1L)).willReturn(Optional.of(board));
 
     //when
-    BoardResponse response = boardService.update(1L, request);
+    BoardResponse response = boardService.update(1L, request, "test@test.com");
 
     //then
     assertThat(response.getTitle()).isEqualTo("수정된 제목");
@@ -230,7 +232,7 @@ public class BoardServiceTest {
     given(boardRepository.findByIdAndDeletedFalse(1L)).willReturn(Optional.empty());
 
     //when & then
-    assertThatThrownBy(()-> boardService.update(1L, request))
+    assertThatThrownBy(()-> boardService.update(1L, request, "test@test.com"))
         .isInstanceOf(BoardException.class)
         .hasMessage("Board not found.");
 
@@ -247,6 +249,7 @@ public class BoardServiceTest {
 
     //given
     Member member = Member.builder()
+        .email("test@test.com")  // email 추가
         .nickname("유진")
         .build();
 
@@ -259,7 +262,7 @@ public class BoardServiceTest {
     given(boardRepository.findByIdAndDeletedFalse(1L)).willReturn(Optional.of(board));
 
     //when
-    boardService.delete(1L);
+    boardService.delete(1L, "test@test.com");
 
     //then
     then(boardRepository).should().findByIdAndDeletedFalse(1L);
@@ -274,7 +277,7 @@ public class BoardServiceTest {
     given(boardRepository.findByIdAndDeletedFalse(1L)).willReturn(Optional.empty());
 
     //when & then
-    assertThatThrownBy(()-> boardService.delete(1L))
+    assertThatThrownBy(()-> boardService.delete(1L, "test@test.com"))
         .isInstanceOf(BoardException.class)
         .hasMessage("Board not found.");
 

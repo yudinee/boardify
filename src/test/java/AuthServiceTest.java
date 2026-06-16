@@ -88,7 +88,7 @@ public class AuthServiceTest {
 
     given(memberRepository.findByEmail(request.getEmail())).willReturn(Optional.of(member));
     given(passwordEncoder.matches(request.getPassword(), member.getPassword())).willReturn(true);
-    given(jwtProvider.generateToken(member.getEmail())).willReturn("token");
+    given(jwtProvider.generateAccessToken(member.getEmail())).willReturn("token");
 
     //when
     LoginResponse response = authService.login(request);
@@ -98,7 +98,7 @@ public class AuthServiceTest {
 
     then(memberRepository).should().findByEmail(request.getEmail());
     then(passwordEncoder).should().matches(request.getPassword(), member.getPassword());
-    then(jwtProvider).should().generateToken(member.getEmail());
+    then(jwtProvider).should().generateAccessToken(member.getEmail());
   }
 
   @Test

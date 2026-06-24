@@ -64,7 +64,7 @@ public class AuthService {
 
    redisService.save("refresh:" + member.getEmail(), refreshToken, 7, TimeUnit.DAYS);
 
-   return new  LoginResponse(accessToken, refreshToken);
+   return new  LoginResponse(accessToken, refreshToken, member.getEmail());
 
   }
 
@@ -90,7 +90,7 @@ public class AuthService {
     // 4. 새 access token 발급
     String newAccessToken = jwtProvider.generateAccessToken(email);
 
-    return new LoginResponse(newAccessToken, refreshToken);
+    return new LoginResponse(newAccessToken, refreshToken, email);
 
   }
 

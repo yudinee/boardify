@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import styles from './AuthPage.module.css'
-import { login } from '../api/memberApi'
+import { login} from '../api/memberApi'
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -17,7 +17,10 @@ export default function LoginPage() {
     setError('')
     try {
       const { data } = await login(form)
-      localStorage.setItem('token', data.accessToken)
+      localStorage.setItem('accessToken', data.accessToken)
+      localStorage.setItem('refreshToken', data.refreshToken)
+      localStorage.setItem('userEmail', data.email)
+
       navigate('/boards')
     } catch (err) {
       setError(err.response?.data || '로그인에 실패했습니다.')

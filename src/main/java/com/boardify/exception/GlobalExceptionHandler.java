@@ -11,6 +11,7 @@ public class GlobalExceptionHandler {
   // 예상치 못한 모든 예외 처리 (500 Internal Server Error)
   @ExceptionHandler(Exception.class)
   public ResponseEntity<String> handleException(Exception e) {
+    e.printStackTrace();
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
   }
 

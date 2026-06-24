@@ -13,6 +13,7 @@ public class BoardResponse {
   private String title;
   private String content;
   private String author;
+  private String authorEmail;
   private LocalDateTime createdAt;
 
   public static BoardResponse from(Board board){
@@ -21,6 +22,7 @@ public class BoardResponse {
         .title(board.getTitle())
         .content(board.getContent())
         .author(board.getMember().getNickname())
+        .authorEmail(board.getMember().getEmail())
         .createdAt(board.getCreatedAt())
         .build();
   }

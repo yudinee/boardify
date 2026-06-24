@@ -10,7 +10,8 @@ import { getOne, deleteBoard } from '../api/boardapi'
 export default function BoardDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('accessToken')
+  const currentEmail = localStorage.getItem('userEmail')
 
   const [board, setBoard] = useState(null)
   const [liked, setLiked] = useState(false)
@@ -106,11 +107,12 @@ export default function BoardDetailPage() {
         <div className={styles.content}>
           <Viewer initialValue={board.content} />
         </div>
-        
+        {board.authorEmail == currentEmail &&(
           <div className={styles.actions}>
             <button onClick={() => navigate(`/boards/${id}/edit`)}>수정</button>
             <button className={styles.deleteBtn} onClick={handleDelete}>삭제</button>
           </div>
+        )}
         
       </div>
 

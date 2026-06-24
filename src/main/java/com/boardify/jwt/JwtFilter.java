@@ -27,22 +27,31 @@ public class JwtFilter extends OncePerRequestFilter {
     // 1. 요청 헤더에서 토큰 꺼내기
     String token = resolveToken(request);
 
-    // 2. 토큰이 있고 유효하면 인증 처리
-    if (token != null && jwtProvider.validateToken(token)) {
-      // 3. 토큰에서 이메일 꺼내기
-      String email = jwtProvider.getEmail(token);
+    // 2. 토큰이 있으면 유효성 검사 시도
+    if (token != null) {
+      try {
+        // 3. 토큰 유효성 검사 (만료/변조 여부 확인)
+        if (jwtProvider.validateToken(token)) {
+          // 4. 토큰에서 이메일 꺼내기
+          String email = jwtProvider.getEmail(token);
 
-      // 4. 이메일로 유저 정보 가져오기
-      UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+          // 5. 이메일로 유저 정보 가져오기
+          UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-      // 5. 인증 객체 만들어서 SecurityContext에 저장
-      UsernamePasswordAuthenticationToken authentication =
-          new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+          // 6. 인증 객체 만들어서 SecurityContext에 저장
+          UsernamePasswordAuthenticationToken authentication =
+              new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-      SecurityContextHolder.getContext().setAuthentication(authentication);
+          SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+      } catch (Exception e) {
+        // [추가] 토큰이 만료되거나 유효하지 않아도 예외를 던지지 않고 무시
+        // → 인증 없이 다음 필터로 넘어감
+        // → permitAll() 엔드포인트는 그냥 통과, authenticated() 엔드포인트는 Security가 401 반환
+      }
     }
 
-    // 6. 다음 필터로 넘기기
+    // 7. 다음 필터로 넘기기 (인증 성공 여부와 관계없이 항상 실행)
     filterChain.doFilter(request, response);
   }
 
